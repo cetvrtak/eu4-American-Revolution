@@ -1,34 +1,10 @@
 # country
-on_colonial_liberation = {
-	country_event = { id = colonial_nation.90 days = 1 }
-}
-
-# country
-on_colonial_reintegration = {
-	events = {
-		colonial_nation.91
-	}
-}
-
-# country
 # root = winning country, from = loser country
 on_war_won = {
 	FROM = { country_event = { id = flavor_cri.6 } }
 	ROOT = { country_event = { id = tributary_events.32 } }
-	if = {
-		limit = {
-			has_global_flag = american_independence_war_started
-			has_country_flag = american_revolution
-			event_target:revolutionary_america = {
-				is_subject_of = ROOT
-			}
-		}
-		clr_global_flag = american_independence_war_started
-		clear_global_event_target = revolutionary_america
-		every_country = {
-			clr_country_flag = joined_americans
-			clr_country_flag = refused_americans
-		}
+	events = {
+		1027
 	}
 }
 
@@ -37,23 +13,8 @@ on_war_won = {
 on_war_lost = {
 	ROOT = { country_event = { id = flavor_cri.6 } }
 	ROOT = { country_event = { id = tributary_events.32 } }
-	if = {
-		limit = {
-			has_global_flag = american_independence_war_started
-			has_country_flag = american_revolution
-			event_target:revolutionary_america = {
-				NOT = { is_subject_of = ROOT }
-			}
-		}
-		clr_global_flag = american_independence_war_started
-		clear_global_event_target = revolutionary_america
-		ROOT = {
-			clr_country_flag = american_revolution
-		}
-		every_country = {
-			clr_country_flag = joined_americans
-			clr_country_flag = refused_americans
-		}
+	events = {
+		1028
 	}
 }
 

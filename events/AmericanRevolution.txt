@@ -388,6 +388,8 @@ country_event = {
 	desc = none
 	picture = none
 
+	hidden = yes
+
 	trigger = {
 		has_dlc = "Emperor"
 		alliance_with = event_target:revolutionary_america
@@ -404,4 +406,69 @@ country_event = {
 	option = {
 
 	}
+}
+
+#Clear flags and event targets
+#on_war_won
+country_event = {
+	id = 1027
+
+	title = none
+	desc = none
+	picture = none
+
+	hidden = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = american_revolution
+		FROM = { tag = event_target:revolutionary_america }
+	}
+
+	immediate = {
+		clr_global_flag = american_independence_war_started
+		clear_global_event_target = revolutionary_america
+		every_country = {
+			clr_country_flag = joined_americans
+			clr_country_flag = refused_americans
+		}
+	}
+
+	option = {}
+}
+
+#on_war_lost
+country_event = {
+	id = 1028
+
+	title = none
+	desc = none
+	picture = none
+
+	hidden = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = american_revolution
+		FROM = {
+			tag = event_target:revolutionary_america
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = { FROM = { NOT = { is_subject_of = ROOT } } }
+			clr_country_flag = american_revolution
+		}
+		clr_global_flag = american_independence_war_started
+		clear_global_event_target = revolutionary_america
+		every_country = {
+			clr_country_flag = joined_americans
+			clr_country_flag = refused_americans
+		}
+	}
+
+	option = {}
 }
