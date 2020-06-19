@@ -1,0 +1,407 @@
+normal_or_historical_nations = yes
+
+# American quest for independence
+country_event = {
+	id = 1021
+	title = "EVTNAME1021"
+	desc = "EVTDESC1021"
+	picture = ANGRY_MOB_eventPicture
+	
+	trigger = {
+		NOT = { has_global_flag = american_independence_war_started }
+		NOT = { has_country_flag = american_revolution }
+		capital_scope = { continent = europe }
+		current_age = age_of_revolutions
+		any_subject_country = {
+			is_colonial_nation_of = ROOT
+			liberty_desire = 50
+			capital_scope = {
+				OR = {
+					continent = north_america
+					continent = south_america
+				}
+			}
+			if = {
+				limit = { has_dlc = "Emperor" }
+				any_country = {
+					is_rival = ROOT
+					OR = {
+						alliance_with = PREV
+						NOT = {
+							war_with = ROOT
+							truce_with = ROOT
+							NOT = { has_opinion = { who = PREV value = 0 } }
+						}
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		random_subject_country = {
+			limit = {
+				is_colonial_nation_of = ROOT
+				liberty_desire = 50
+				capital_scope = {
+					OR = {
+						continent = north_america
+						continent = south_america
+					}
+				}
+			}
+			save_global_event_target_as = revolutionary_america
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 120
+
+		modifier = {
+			factor = 0.9
+			economic_ideas = 6
+		}
+		modifier = {
+			factor = 1.1
+			NOT = { economic_ideas = 4 }
+		}
+		modifier = {
+			factor = 1.1
+			NOT = { economic_ideas = 2 }
+		}
+		modifier = {
+			factor = 0.9
+			NOT = { stability = 0 }
+		}
+		modifier = {
+			factor = 0.9
+			NOT = { stability = -1 }
+		}
+		modifier = {
+			factor = 0.9
+			NOT = { stability = -2 }
+		}
+		modifier = {
+			factor = 1.1
+			stability = 1
+		}
+		modifier = {
+			factor = 1.1
+			stability = 2
+		}
+		modifier = {
+			factor = 1.1
+			stability = 3
+		}
+		modifier = {
+			factor = 0.95
+			NOT = { adm = 2 }
+		}
+		modifier = {
+			factor = 0.85
+			NOT = { adm = 1 }
+		}
+		modifier = {
+			factor = 0.95
+			is_year = 1760
+		}
+		modifier = {
+			factor = 0.85
+			is_year = 1780
+		}
+	}
+	
+	option = {
+		name = "EVTOPTA1021"
+		set_country_flag = american_revolution
+		if = {
+			limit = { has_dlc = "Emperor" }
+			custom_tooltip = ally_joining_revolter_tooltip
+		}
+	}
+}
+
+
+# Trade restrictions
+country_event = {
+	id = 1022
+	title = "EVTNAME1022"
+	desc = "EVTDESC1022"
+	picture = LIBERUM_VETO_eventPicture
+	
+	trigger = {
+		has_country_flag = american_revolution
+		NOT = { has_country_flag = trade_restrictions }
+		event_target:revolutionary_america = { mercantilism = 50 }
+	}
+	
+	mean_time_to_happen = {
+		months = 24
+	}
+	
+	option = {
+		name = "EVTOPTA1022" # Send troops
+		add_mil_power = 100
+		set_country_flag = trade_restrictions
+	}
+
+	option = {
+		name = "EVTOPTB1022" # Restrict export
+		add_country_modifier = {
+			name = "export_restrictions"
+			duration = 3650
+		}
+		set_country_flag = trade_restrictions
+	}
+}
+
+# Colonial assembly
+country_event = {
+	id = 1023
+	title = "EVTNAME1023"
+	desc = "EVTDESC1023_a"
+	picture = LIBERUM_VETO_eventPicture
+	
+	trigger = {
+		has_country_flag = american_revolution
+		NOT = { war_with = event_target:revolutionary_america }
+	}
+	
+	mean_time_to_happen = {
+		months = 60
+
+		modifier = {
+			factor = 0.9
+			event_target:revolutionary_america = { liberty_desire = 60 }
+		}
+		modifier = {
+			factor = 0.9
+			event_target:revolutionary_america = { liberty_desire = 75 }
+		}
+		modifier = {
+			factor = 0.9
+			event_target:revolutionary_america = { liberty_desire = 90 }
+		}
+
+		modifier = {
+			factor = 0.9
+			NOT = { stability = -1 }
+		}
+		modifier = {
+			factor = 0.9
+			NOT = { stability = -2 }
+		}
+		modifier = {
+			factor = 0.9
+			NOT = { advisor = statesman }
+		}
+		modifier = {
+			factor = 0.9
+			NOT = { adm = 1 }
+		}
+		modifier = {
+			factor = 0.9
+			NOT = { dip = 1 }
+		}
+		modifier = {
+			factor = 1.1
+			adm = 5
+		}
+		modifier = {
+			factor = 1.1
+			dip = 5
+		}
+		modifier = {
+			factor = 1.1
+			advisor = statesman
+		}
+	}
+	
+	option = {
+		name = "EVTOPTA1023" # Attempt to find a diplomatic solution
+		ai_chance = { 
+			factor = 1
+			modifier = {
+				factor = 0
+				has_country_modifier = diplomatic_negotiation
+			}
+		}
+		clr_country_flag = american_revolution
+		add_country_modifier = {
+			name = "diplomatic_negotiation"
+			duration = -1
+		}
+	}
+		
+	option = {
+		name = "EVTOPTB1023" # The days of diplomacy are over
+		ai_chance = { factor = 100 }
+		set_global_flag = american_independence_war_started
+		add_stability = -1
+		event_target:revolutionary_america = {
+			declare_war_with_cb = {
+				who = ROOT
+				casus_belli = cb_colonial_independance_war
+			}
+		}
+		if = {
+			limit = { has_dlc = "Emperor" }
+			custom_tooltip = ally_joining_revolter_tooltip
+		}
+	}
+}
+
+# Treaty of Alliance
+country_event = {
+	id = 1024
+	title = "EVTNAME1024_a"
+	desc = "EVTDESC1024_a"
+	picture = DIPLOMACY_eventPicture
+
+	trigger = {
+		has_dlc = "Emperor"
+		is_at_war = no
+		any_country = {
+			has_country_flag = american_revolution
+			war_with = event_target:revolutionary_america
+			is_enemy = ROOT
+			NOT = { truce_with = ROOT }
+		}
+		has_opinion = {
+			who = event_target:revolutionary_america
+			value = 0
+		}
+		NOT = { alliance_with = event_target:revolutionary_america }
+		NOT = { has_country_flag = refused_americans}
+	}
+
+	mean_time_to_happen = {
+		months = 24
+
+		modifier = {
+			factor = 0.5
+			had_global_flag = { flag = american_independence_war_started days = 730 }
+		}
+		modifier = {
+			factor = 0.5
+			had_global_flag = { flag = american_independence_war_started days = 1095 }
+		}
+	}
+
+	option = {
+		name = "EVTOPTA1024_a"	# Anything to weaken our rival
+		ai_chance = { factor = 100 }
+		create_alliance = event_target:revolutionary_america
+		join_all_offensive_wars_of = event_target:revolutionary_america
+		set_country_flag = joined_americans
+	}
+
+	option = {
+		name = "EVTOPTB1024_a"	# This is not a good time
+		ai_chance = { factor = 1 }
+		add_prestige = -5
+		set_country_flag = refused_americans
+	}
+}
+
+# Treaty of Aranjuez
+country_event = {
+	id = 1025
+	title = "EVTNAME1025_a"
+	desc = "EVTDESC1025_a"
+	picture = DIPLOMACY_eventPicture
+
+	trigger = {
+		is_at_war = no
+		any_ally = {
+			has_country_flag = joined_americans
+			any_country = {
+				has_country_flag = american_revolution
+				war_with = PREV
+			}
+		}
+		any_country = {
+			has_country_flag = american_revolution
+			war_with = event_target:revolutionary_america
+			NOT = {
+				alliance_with = ROOT
+				truce_with = ROOT
+			}
+			ROOT = {
+				OR = {
+					ai = no
+					ai_attitude = { who = PREV attitude = attitude_hostile }
+					ai_attitude = { who = PREV attitude = attitude_rivalry }
+					ai_attitude = { who = PREV attitude = attitude_outraged }
+				}
+			}
+		}
+		NOT = { alliance_with = event_target:revolutionary_america }
+		NOT = { has_country_flag = refused_americans}
+	}
+
+	mean_time_to_happen = {
+		months = 24
+
+		modifier = {
+			factor = 0.5
+			had_global_flag = { flag = american_independence_war_started days = 730 }
+		}
+		modifier = {
+			factor = 0.5
+			had_global_flag = { flag = american_independence_war_started days = 1095 }
+		}
+	}
+
+	option = {
+		name = "EVTOPTA1024_a"	# Anything to weaken our rival
+		create_alliance = event_target:revolutionary_america
+		join_all_offensive_wars_of = event_target:revolutionary_america
+
+		ai_chance = {
+			factor = 100
+
+			modifier = {
+				factor = 0
+				any_country = {
+					has_country_flag = american_revolution
+					reverse_has_opinion = {
+						who = ROOT
+						value = 100
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTB1024_a"	# This is not a good time
+		ai_chance = { factor = 1 }
+		add_prestige = -5
+		set_country_flag = refused_americans
+	}
+}
+
+country_event = {
+	id = 1026
+	title = none
+	desc = none
+	picture = none
+
+	trigger = {
+		has_dlc = "Emperor"
+		alliance_with = event_target:revolutionary_america
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	immediate = {
+		set_country_flag = joined_americans
+	}
+
+	option = {
+
+	}
+}

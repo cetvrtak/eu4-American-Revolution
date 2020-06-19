@@ -1,0 +1,9 @@
+﻿l_english:
+ EVTDESC1023_a:0 "Many honored and influential representatives from several of our colonies afflicted by $MONARCH$'s new policies have assembled in [revolutionary_america.Capital.GetCapitalName]. We should take appropriate measures to stop them before they find common cause and manage to turn all our colonies against us."
+ EVTNAME1024_a:0 "Treaty of Alliance"
+ EVTDESC1024_a:0 "The Treaty of Alliance with France or Franco-American Treaty was a defensive alliance between France and the United States of America, formed in the midst of the American Revolutionary War, which promised mutual military support in case fighting should break out between French and British forces."
+ EVTOPTA1024_a:0 "Anything to weaken our rival"
+ EVTOPTB1024_a:0 "This is not a good time"
+ EVTNAME1025_a:0 "Treaty of Aranjuez"
+ EVTDESC1025_a:0 "The Treaty of Aranjuez (1779) was signed on 12 April 1779 by France and Spain. Under its terms, Spain agreed to support France in its war with Britain, in return for French assistance in recovering the former Spanish possessions of Menorca, Gibraltar and the Floridas."
+ ally_joining_revolter_tooltip:0 "§ROther countries may join [revolutionary_america.GetName] in their Independence War!§!"
