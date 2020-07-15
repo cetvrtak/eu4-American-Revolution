@@ -6,6 +6,8 @@ country_event = {
 	title = "EVTNAME1021"
 	desc = "EVTDESC1021"
 	picture = ANGRY_MOB_eventPicture
+
+	major = yes
 	
 	trigger = {
 		NOT = { has_global_flag = american_independence_war_started }
@@ -128,11 +130,16 @@ country_event = {
 	title = "EVTNAME1022"
 	desc = "EVTDESC1022"
 	picture = LIBERUM_VETO_eventPicture
+
+	major = yes
 	
 	trigger = {
 		has_country_flag = american_revolution
 		NOT = { has_country_flag = trade_restrictions }
-		event_target:revolutionary_america = { mercantilism = 50 }
+		event_target:revolutionary_america = {
+			is_subject_of = ROOT
+			mercantilism = 50
+		}
 	}
 	
 	mean_time_to_happen = {
@@ -162,9 +169,14 @@ country_event = {
 	desc = "EVTDESC1023_a"
 	picture = LIBERUM_VETO_eventPicture
 	
+	major = yes
+	
 	trigger = {
 		has_country_flag = american_revolution
-		NOT = { war_with = event_target:revolutionary_america }
+		event_target:revolutionary_america = {
+			is_subject_of = ROOT
+			NOT = { war_with = ROOT }
+		}
 	}
 	
 	mean_time_to_happen = {
@@ -223,14 +235,14 @@ country_event = {
 			factor = 1
 			modifier = {
 				factor = 0
-				has_country_modifier = diplomatic_negotiation
+				has_country_flag = diplomatic_negotiation
 			}
 		}
 		clr_country_flag = american_revolution
-		add_country_modifier = {
-			name = "diplomatic_negotiation"
-			duration = -1
-		}
+		set_country_flag = diplomatic_negotiation
+		add_prestige = -20
+		add_dip_power = -100
+		add_absolutism = -10
 	}
 		
 	option = {
@@ -238,6 +250,14 @@ country_event = {
 		ai_chance = { factor = 100 }
 		set_global_flag = american_independence_war_started
 		add_stability = -1
+		increase_legitimacy_medium_effect = yes
+		if = {
+			limit = { NOT = { has_country_modifier = no_diplomatic_negotiation } }
+			add_country_modifier = {
+				name = no_diplomatic_negotiation
+				duration = -1
+			}
+		}
 		event_target:revolutionary_america = {
 			declare_war_with_cb = {
 				who = ROOT
@@ -258,6 +278,8 @@ country_event = {
 	desc = "EVTDESC1024_a"
 	picture = DIPLOMACY_eventPicture
 
+	major = yes
+	
 	trigger = {
 		has_dlc = "Emperor"
 		is_at_war = no
@@ -311,6 +333,8 @@ country_event = {
 	desc = "EVTDESC1025_a"
 	picture = DIPLOMACY_eventPicture
 
+	major = yes
+	
 	trigger = {
 		is_at_war = no
 		any_ally = {
@@ -393,6 +417,7 @@ country_event = {
 	trigger = {
 		has_dlc = "Emperor"
 		alliance_with = event_target:revolutionary_america
+		NOT = { has_country_flag = joined_americans }
 	}
 
 	mean_time_to_happen = {

@@ -1,0 +1,3 @@
+no_diplomatic_negotiation = {
+	max_absolutism = 10
+}
