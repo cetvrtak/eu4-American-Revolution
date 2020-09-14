@@ -14,7 +14,7 @@ on_war_lost = {
 	ROOT = { country_event = { id = flavor_cri.6 } }
 	ROOT = { country_event = { id = tributary_events.32 } }
 	events = {
-		1028
+		1027
 	}
 }
 

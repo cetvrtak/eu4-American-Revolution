@@ -10,8 +10,8 @@ country_event = {
 	major = yes
 	
 	trigger = {
-		NOT = { has_global_flag = american_independence_war_started }
-		NOT = { has_country_flag = american_revolution }
+		NOT = { has_global_flag = american_quest_for_independence }
+		NOT = { has_country_flag = crushed_american_revolution }
 		capital_scope = { continent = europe }
 		current_age = age_of_revolutions
 		any_subject_country = {
@@ -41,6 +41,7 @@ country_event = {
 	}
 
 	immediate = {
+		set_global_flag = american_quest_for_independence
 		random_subject_country = {
 			limit = {
 				is_colonial_nation_of = ROOT
@@ -434,7 +435,6 @@ country_event = {
 }
 
 #Clear flags and event targets
-#on_war_won
 country_event = {
 	id = 1027
 
@@ -452,41 +452,12 @@ country_event = {
 	}
 
 	immediate = {
-		clr_global_flag = american_independence_war_started
-		clear_global_event_target = revolutionary_america
-		every_country = {
-			clr_country_flag = joined_americans
-			clr_country_flag = refused_americans
-		}
-	}
-
-	option = {}
-}
-
-#on_war_lost
-country_event = {
-	id = 1028
-
-	title = none
-	desc = none
-	picture = none
-
-	hidden = yes
-
-	is_triggered_only = yes
-
-	trigger = {
-		has_country_flag = american_revolution
-		FROM = {
-			tag = event_target:revolutionary_america
-		}
-	}
-
-	immediate = {
 		if = {
-			limit = { FROM = { NOT = { is_subject_of = ROOT } } }
-			clr_country_flag = american_revolution
+			limit = { FROM = { is_subject_of = ROOT } }
+			set_country_flag = crushed_american_revolution
 		}
+		clr_country_flag = american_revolution
+		clr_global_flag = american_quest_for_independence
 		clr_global_flag = american_independence_war_started
 		clear_global_event_target = revolutionary_america
 		every_country = {
